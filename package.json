@@ -1,0 +1,36 @@
+{
+  "name": "clean-code-todo",
+  "version": "1.0.0",
+  "description": "TODO app for the RS School Clean Code task",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skylive-skl/clean-code-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/skylive-skl/clean-code-todo/issues"
+  },
+  "homepage": "https://github.com/skylive-skl/clean-code-todo#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10"
+  },
+  "private": true,
+  "lint-staged": {
+    "*.js": "eslint",
+    "*.{js,json,md,html,css}": "prettier --check"
+  }
+}
