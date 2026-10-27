@@ -58,9 +58,7 @@ const addTask = function () {
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
 
-  //Append listItem to incompleteTaskHolder
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  appendTaskToList(listItem, incompleteTaskHolder, taskCompleted);
 
   taskInput.value = '';
 };
@@ -97,21 +95,18 @@ const deleteTask = function () {
   ul.removeChild(listItem);
 };
 
-//Mark task completed
+//Each list needs its own checkbox handler.
+const appendTaskToList = function (listItem, list, onCheckboxChange) {
+  list.appendChild(listItem);
+  bindTaskEvents(listItem, onCheckboxChange);
+};
+
 const taskCompleted = function () {
-  //Append the task list item to the #completed-tasks
-  const listItem = this.parentNode;
-  completedTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
+  appendTaskToList(this.parentNode, completedTasksHolder, taskIncomplete);
 };
 
 const taskIncomplete = function () {
-  //Mark task as incomplete.
-  //When the checkbox is unchecked
-  //Append the task list item to the #incompleteTasks.
-  const listItem = this.parentNode;
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  appendTaskToList(this.parentNode, incompleteTaskHolder, taskCompleted);
 };
 
 //The glue to hold it all together.
@@ -133,18 +128,14 @@ const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
   checkBox.onchange = checkBoxEventHandler;
 };
 
-//cycle over incompleteTaskHolder ul list items
-//for each list item
-for (let i = 0; i < incompleteTaskHolder.children.length; i++) {
-  //bind events to list items chldren(tasksCompleted)
-  bindTaskEvents(incompleteTaskHolder.children[i], taskCompleted);
-}
+const bindListEvents = function (list, onCheckboxChange) {
+  for (const listItem of list.children) {
+    bindTaskEvents(listItem, onCheckboxChange);
+  }
+};
 
-//cycle over completedTasksHolder ul list items
-for (let i = 0; i < completedTasksHolder.children.length; i++) {
-  //bind events to list items chldren(tasksIncompleted)
-  bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
-}
+bindListEvents(incompleteTaskHolder, taskCompleted);
+bindListEvents(completedTasksHolder, taskIncomplete);
 
 // Issues with usability don't get seen until they are in front of a human tester.
 
